@@ -1,31 +1,42 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تفاصيل الكتاب</title>
   <style>
+    /* CSS styles */
     #loading-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #f5f2e6;
+      background-color: #f5f2e6; /* Background color */
       display: flex;
       justify-content: center;
       align-items: center;
     }
+
     #loading-screen img {
       width: 30px;
       height: 30px;
       animation: spin 2s linear infinite;
     }
+
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
-    .tg td, .tg th {
+
+    .tg td,
+    .tg th {
       border-color: black;
       border-style: solid;
       border-width: 1px;
@@ -35,23 +46,77 @@
       padding: 0px;
       word-break: normal;
     }
-    .tg .tg-0pky { text-align: center; vertical-align: top; }
-    .tg .tg-0lax { text-align: center; vertical-align: top; }
+
+    .tg .tg-0pky {
+      border-color: inherit;
+      text-align: center;
+      vertical-align: top;
+    }
+
+    .tg .tg-0lax {
+      text-align: center;
+      vertical-align: top;
+    }
+
     @media (min-width: 601px) {
-      #sendingMessage { text-align: right; }
-      .btn { float: right; }
-      .tg td:nth-child(1), .tg th:nth-child(1) { width: 30%; text-align: right; }
-      .tg td:nth-child(2), .tg th:nth-child(2) { width: 70%; text-align: right; }
+      #sendingMessage {
+        text-align: right;
+      }
+
+      .btn {
+        float: right;
+      }
+
+      .tg td:nth-child(1),
+      .tg th:nth-child(1) {
+        width: 30%;
+        text-align: right;
+      }
+
+      .tg td:nth-child(2),
+      .tg th:nth-child(2) {
+        width: 70%;
+        text-align: right;
+      }
     }
+
     @media (max-width: 600px) {
-      .tg td, .tg th { display: block; text-align: right; }
-      .tg td:nth-child(odd), .tg th:nth-child(odd) { background-color: #f2f2f2; }
+      .tg td,
+      .tg th {
+        display: block;
+        text-align: right;
+      }
+
+      .tg td:nth-child(odd),
+      .tg th:nth-child(odd) {
+        background-color: #f2f2f2;
+      }
     }
-    #summary { white-space: pre-line; }
-    #star-rating { direction: rtl; }
-    .star { cursor: pointer; font-size: 24px; color: #ccc; }
-    .selected { color: #ff9d00; }
-    .yellow-star { color: #ff9d00; font-size: 18px; }
+
+    #summary {
+      white-space: pre-line;
+    }
+
+    /* Star rating styles */
+    #star-rating {
+      direction: rtl;
+    }
+
+    .star {
+      cursor: pointer;
+      font-size: 24px;
+      color: #ccc;
+    }
+
+    .selected {
+      color: #ff9d00;
+    }
+
+    .yellow-star {
+      color: #ff9d00;
+      font-size: 18px;
+    }
+
     .btn {
       display: block;
       width: 100%;
@@ -66,13 +131,29 @@
       cursor: pointer;
       text-align: center;
     }
-    .btn:hover { background-color: #efc787; }
+
+    .btn:hover {
+      background-color: #efc787;
+    }
   </style>
+
 </head>
+
 <body>
+  <header>
+    <div class="menu-icon" onclick="toggleMenu()"></div>
+    <img src="https://wa022.github.io/2028/oumaima.png" alt="شعار" class="logo">
+    <nav>
+      <a href="#" class="nav-a">الرئيسية</a>
+      <a href="#" class="nav-a">من أنا</a>
+      <a href="#" class="nav-a">للتواصل معي</a>
+    </nav>
+  </header>
+
   <div id="loading-screen">
     <img src="https://wa022.github.io/2028/loader.png" alt="جاري التحميل">
   </div>
+
   <div id="book-details" class="hidden">
     <table style="width: 100%;border-color: transparent;" class="tg">
       <thead>
@@ -104,6 +185,7 @@
             <p id="category"></p>
           </td>
         </tr>
+
         <tr>
           <td class="tg-0pky">تقييم الزوار
             <p id="rating-f"><span class="star-rating"></span></p>
@@ -146,38 +228,57 @@
       </tbody>
     </table>
   </div>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
+    function toggleMenu() {
+      const nav = document.querySelector('nav');
+      const menuIcon = document.querySelector('.menu-icon');
+      nav.classList.toggle('open');
+      if (nav.classList.contains('open')) {
+        menuIcon.style.backgroundImage = "url('https://wa022.github.io/2028/left-arrow.png')";
+      } else {
+        menuIcon.style.backgroundImage = "url('https://wa022.github.io/2028/menu.png')";
+      }
+    }
+
     $(document).ready(function () {
       var urlParams = new URLSearchParams(window.location.search);
       var bookTitle = decodeURIComponent(urlParams.get('title'));
+
       $.ajax({
         url: "https://sheets.googleapis.com/v4/spreadsheets/1eFNyOTc1sjFwoBYA5FzB4f-ecGs0w-COjOZ_mXLWBbo/values/Sheet1!A1:N100?key=AIzaSyBhiqVypmyLHYPmqZYtvdSvxEopcLZBdYU",
         method: "GET",
         success: function (data) {
           var books = data.values;
           books.shift();
+
           var foundBook = books.find(function (book) {
             return book[0] === bookTitle;
           });
+
           if (foundBook) {
             $('#book-title').text(foundBook[0]);
             $('#book-cover').attr('src', foundBook[1]);
             $('#author').text(foundBook[2]);
             $('#category').text(foundBook[4]);
             $('#pages').text(foundBook[3]);
+
             if (foundBook[7]) {
               $('#review').text(foundBook[8]);
             } else {
               $('#review').text('لا توجد مراجعة حاليا.');
             }
+
             var officialRatingValue = parseInt(foundBook[6]);
             var starsString = '';
             for (var i = 0; i < officialRatingValue; i++) {
               starsString += '⭐';
             }
             $('#rating').text(starsString);
+
             $('#summary').text('' + foundBook[7]);
+
             $.ajax({
               url: "https://sheets.googleapis.com/v4/spreadsheets/1BlEY02zKqkGzWQv_IOPzEaCIV0fXdc7O-aZ14rBrzRI/values/Sheet1!A1:N100?key=AIzaSyBhiqVypmyLHYPmqZYtvdSvxEopcLZBdYU",
               method: "GET",
@@ -186,12 +287,16 @@
                 var bookRatings = ratingsArray.filter(function (rating) {
                   return rating[0] === bookTitle;
                 });
+
                 if (bookRatings.length > 0) {
                   var sum = bookRatings.reduce((acc, val) => acc + parseInt(val[1]), 0);
                   var averageRating = sum / bookRatings.length;
+
                   var starRating = $('#rating-f .star-rating');
                   starRating.empty();
+
                   var filledStars = Math.round(averageRating);
+
                   for (var i = 0; i < filledStars; i++) {
                     var star = $('<span>').addClass('star yellow-star').text('⭐');
                     starRating.append(star);
@@ -203,8 +308,10 @@
                 console.error("حدث خطأ أثناء جلب تقييمات الزوار");
               }
             });
+
             $('#bookTitle').val(foundBook[0]);
             $('#author').val(foundBook[2]);
+
             $('#loading-screen').fadeOut('slow', function () {
               $('#book-details').fadeIn('slow');
             });
@@ -218,12 +325,14 @@
           $('#loading-screen').fadeOut('slow');
         }
       });
+
       $('#star-rating .star').click(function () {
         var rating = $(this).data('rating');
         $('#visitorRating').val(rating);
         $(this).addClass('selected').prevAll().addClass('selected');
         $(this).nextAll().removeClass('selected');
       });
+
       $('#visitorRatingForm').submit(function (event) {
         event.preventDefault();
         if ($('#visitorRating').val() === "") {
@@ -251,4 +360,5 @@
     });
   </script>
 </body>
+
 </html>
